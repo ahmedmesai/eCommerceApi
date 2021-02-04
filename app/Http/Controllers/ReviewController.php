@@ -7,7 +7,6 @@ use App\Http\Resources\ReviewResource;
 use App\Models\Model\Product;
 use App\Models\Model\Review;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ReviewController extends Controller
@@ -82,9 +81,13 @@ class ReviewController extends Controller
      * @param  \App\Models\Model\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request, $id, Review $review)
     {
-        //
+        $product = Product::find($id);
+        $review->update($request->all());
+        return response([
+            'data' => new ReviewResource($review),
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -93,8 +96,12 @@ class ReviewController extends Controller
      * @param  \App\Models\Model\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Review $review)
+    public function destroy($id, Review $review)
     {
-        //
+        $review->delete();
+
+        return response([
+            'data' => new ReviewResource($review),
+        ], Response::HTTP_NO_CONTENT);
     }
 }
