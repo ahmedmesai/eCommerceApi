@@ -17,7 +17,7 @@ class ReviewResource extends JsonResource
         // return parent::toArray($request);
         return [
             'customer' => $this->customer,
-            'body' => $this->review,
+            'review' => $this->review,
             'star' => $this->star
         ];
     }
